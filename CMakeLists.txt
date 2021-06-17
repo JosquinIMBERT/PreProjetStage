@@ -4,7 +4,7 @@ project(PreProjetStage)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-add_executable(PreProjetStage main.cpp)
+add_executable(PreProjetStage main.cpp RedisSubdivision.cpp RedisUsingEvents.cpp RedisUsingEvents.h RedisSubdivision.h)
 
 # <------------ add cassandra dependency --------------->
 find_path(CASSANDRA_HEADER apache-cassandra-3.11.10)
