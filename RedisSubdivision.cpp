@@ -3,9 +3,10 @@
 #include <sw/redis++/redis++.h>
 #include <thread>
 #include <unistd.h>
-#include <ctime>
 #include <set>
 #include <vector>
+
+#include "Ensemble.h"
 
 //Related header file
 #include "RedisSubdivision.h"
@@ -14,7 +15,7 @@ using namespace sw::redis;
 using namespace std;
 
 namespace solution_subdivision {
-    vector<set<int>> sets;
+    vector<Ensemble> sets;
     int cpt = 0;
 
     Redis redis = Redis("tcp://127.0.0.1:6379");
@@ -47,11 +48,11 @@ namespace solution_subdivision {
                 string keyWithTTL = key + EXTENSION;
 
                 if (i < 200) {
-                    add_key_to_set(0);
+                    add_key_to_set(0, to_string(i));
                 } else if (i < 400) {
-                    add_key_to_set(1);
+                    add_key_to_set(1, to_string(i));
                 } else {
-                    add_key_to_set(2);
+                    add_key_to_set(2, to_string(i));
                 }
             }
             print_sets();
@@ -63,23 +64,23 @@ namespace solution_subdivision {
     }
 
     void add_set(int set_id) {
-        set<int> new_set;
+        Ensemble new_set;
         sets.push_back(new_set);
     }
 
-    int add_key_to_set(int set_id) {
+    int add_key_to_set(int set_id, string key) {
         if(sets.at(set_id).size()>MAX_SET_SIZE) {
-
+            //TODO supprimer l'élément le plus ancien (transfert vers Cassandra)
         }
-        sets.at(set_id).insert(cpt);
+        sets.at(set_id).add(key);
         return cpt++;
     }
 
     void print_sets() {
         for(int i=0; i<sets.size(); i++) {
             cout << "Set("<<i<<") - "<<sets.at(i).size()<<" elements : [";
-            for(time_t time : sets.at(i)) {
-                cout << time << " ";
+            for(int j=0; j<sets.at(i).size(); j++) {
+                cout << sets.at(i).get(j) << " ";
             }
             cout << "]" << endl;
         }

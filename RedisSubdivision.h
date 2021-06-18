@@ -13,7 +13,7 @@ namespace solution_subdivision {
     std::vector<std::string> split(char delimiter, std::string src);
 
     void add_set(int set_id);
-    int add_key_to_set(int set_id);
+    int add_key_to_set(int set_id, std::string key);
     void print_sets();
 
     int main(int argc, char **argv);

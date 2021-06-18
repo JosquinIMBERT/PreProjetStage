@@ -59,24 +59,26 @@ namespace solution_events {
 
 
         cout << endl << endl << "############# TEST CASSANDRA #############" << endl;
-        CassFuture *connect_future = NULL;
-        CassCluster *cluster = cass_cluster_new();
-        CassSession *session = cass_session_new();
+        CassFuture *connect_future = NULL; //Futur résultat d'une opération
+        CassCluster *cluster = cass_cluster_new(); //Objet représentant le cluster = groupement de serveurs
+        CassSession *session = cass_session_new(); //Objet représentant la session = connexion aux serveurs
 
-        // Add contact points
+        // Add contact points <=> indication des données permettant d'entrer dans le Cluster
         cass_cluster_set_contact_points(cluster, cassandra_host);
         cass_cluster_set_port(cluster, cassandra_port);
 
         // Provide the cluster object as configuration to connect the session
-        connect_future = cass_session_connect(session, cluster);
+        connect_future = cass_session_connect(session, cluster); // Connexion au Cluster
 
         if (cass_future_error_code(connect_future) == CASS_OK) {
             CassFuture *close_future = NULL;
 
             // Build statement and execute query
             const char *query = "SELECT release_version FROM system.local";
+            // Requête : le deuxième paramètre représente le nombre d'inconnues (?) dans la requête
             CassStatement *statement = cass_statement_new(query, 0);
 
+            // Exécution de la requête
             CassFuture *result_future = cass_session_execute(session, statement);
 
             if (cass_future_error_code(result_future) == CASS_OK) {
