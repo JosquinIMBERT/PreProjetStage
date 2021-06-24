@@ -3,7 +3,6 @@
 #include <sw/redis++/redis++.h>
 #include <thread>
 #include <unistd.h>
-#include <set>
 #include <vector>
 
 #include "RedisZSet.h"
@@ -15,7 +14,6 @@ namespace solution_zset {
     Redis redis = Redis("tcp://127.0.0.1:6379");
     CassCluster *cluster;
     CassSession *session;
-    const int MAX_SET_SIZE = 150;
 
     int main(int argc, char **argv) {
         //##### Initialisation des données de connexion #####
@@ -44,6 +42,45 @@ namespace solution_zset {
                 cass_session_free(session);
                 exit(1);
             }
+
+        //##### Création des tables inexistantes #####
+        /*    const CassSchemaMeta_ *schemaMeta = cass_session_get_schema_meta(session);
+            const CassKeyspaceMeta_ * keyspaceMeta = cass_schema_meta_keyspace_by_name(schemaMeta, "BGP_KEYSPACE");
+            if(keyspaceMeta==NULL) {
+                const char *ks_query = "CREATE KEYSPACE BGP_KEYSPACE "
+                                       " WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3}";
+                CassStatement_ *ks_statement = cass_statement_new(ks_query, 0);
+                CassFuture_ *ks_future = cass_session_execute(session, ks_statement);
+                if(cass_future_error_code(ks_future) != CASS_OK) {
+                    cout << "Impossible de créer le Keyspace" << endl;
+                    const char *message;
+                    size_t message_length;
+                    cass_future_error_message(ks_future, &message, &message_length);
+                    fprintf(stderr, "Unable to run query: '%.*s'\n", (int) message_length, message);
+                }
+                keyspaceMeta = cass_schema_meta_keyspace_by_name(schemaMeta, "BGP_KEYSPACE");
+                cass_statement_free(ks_statement);
+            }
+            const CassTableMeta_ *tableMeta = cass_keyspace_meta_table_by_name(keyspaceMeta, "KEY_VALUE");
+            if(!tableMeta) {
+                const char *tab_query = "CREATE TABLE KEY_VALUE (\n"
+                                        " key TEXT,\n"
+                                        " value TEXT,\n"
+                                        " timestamp INT,\n"
+                                        " PRIMARY KEY (key)\n"
+                                        " );";
+                CassStatement_ *tab_statement = cass_statement_new(tab_query, 0);
+                CassFuture_ *tab_future = cass_session_execute(session, tab_statement);
+                if(cass_future_error_code(tab_future) != CASS_OK) {
+                    cout << "Impossible de créer la Table" << endl;
+                    const char *message;
+                    size_t message_length;
+                    cass_future_error_message(tab_future, &message, &message_length);
+                    fprintf(stderr, "Unable to run query: '%.*s'\n", (int) message_length, message);
+                }
+                cass_statement_free(tab_statement);
+            }
+            cass_schema_meta_free(schemaMeta);*/
 
         try {
             //##### Connexion à la base Redis #####

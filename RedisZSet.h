@@ -4,6 +4,8 @@
 #define PREPROJETSTAGE_REDISZSET_H
 
 namespace solution_zset {
+    const int MAX_SET_SIZE = 150;
+
     void add_key_value(std::string set, std::string key, std::string value, int timestamp);
     void cass_statement_bind_int(CassStatement_ *statement, size_t index, int integer);
     int main(int argc, char **argv);
