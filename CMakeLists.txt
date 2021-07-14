@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.13)
 project(PreProjetStage)
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fPIC")
 
-add_executable(PreProjetStage main.cpp RedisSubdivision.cpp RedisUsingEvents.cpp RedisUsingEvents.h RedisSubdivision.h Ensemble.h Ensemble.cpp Couple.h Couple.cpp RedisZSet.h RedisZSet.cpp RedisSizeManager.cpp RedisSizeManager.h RedisInserter.h RedisInserter.cpp ConnectedTool.cpp ConnectedTool.h)
+add_executable(PreProjetStage main.cpp RedisSubdivision.cpp RedisUsingEvents.cpp RedisUsingEvents.h RedisSubdivision.h Ensemble.h Ensemble.cpp Couple.h Couple.cpp RedisZSet.h RedisZSet.cpp RedisSizeManager.cpp RedisSizeManager.h RedisInserter.h RedisInserter.cpp ConnectedTool.cpp ConnectedTool.h funcFromApp.cpp funcFromApp.h TestInserter.cpp TestInserter.h)
 
 # <------------ add cassandra dependency --------------->
 find_path(CASSANDRA_HEADER apache-cassandra-3.11.10)
